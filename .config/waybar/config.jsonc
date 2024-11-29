@@ -3,9 +3,9 @@
     "height": 30,
     "spacing": 4, // Gaps between modules (4px)
     "modules-left": [
-	"custom/logo",
+	    "custom/logo",
         "hyprland/workspaces",
-        "hyprland/mode",
+        "hyprland/submap",
         "custom/spotify"
     ],
     "custom/spotify": {
@@ -29,13 +29,13 @@
         "battery",
         "clock",
         "tray",
-	"group/power"
+	    "group/power"
     ],
     "custom/logo": {
         "format": "󰣇",
-	"tooltip": false
+	    "tooltip": false
     },
-    "hyprland/mode": {
+    "hyprland/submap": {
         "format": "<span style=\"italic\">{}</span>"
     },
     "idle_inhibitor": {
@@ -98,12 +98,12 @@
         "on-click": "pavucontrol"
     },
     "group/power": {
-	"orientation": "inherit",
-	"drawer": {
-		"transition-duration": 500,
-		"children-class": "not-power",
-		"transition-left-to-right": false,
-	}, "modules": [ "custom/power", "custom/quit", "custom/lock", "custom/reboot"]
+        "orientation": "inherit",
+        "drawer": {
+            "transition-duration": 500,
+            "children-class": "not-power",
+            "transition-left-to-right": false,
+        }, "modules": [ "custom/power", "custom/quit", "custom/lock", "custom/reboot"]
     },
     "custom/quit": {
 	    "format": "󰗼",
