@@ -23,8 +23,10 @@
       "weight": 5
     },
     "applications": {
-      "actions":{
-        "enabled": true
+      "actions": {
+        "enabled": true,
+        "hide_category": false,
+        "hide_without_query": true
       },
       "context_aware": true,
       "hide_actions_with_empty_query": true,
@@ -32,7 +34,7 @@
       "placeholder": "Applications",
       "prioritize_new": true,
       "refresh": true,
-      "show_generic": false,
+      "show_generic": true,
       "show_icon_when_single": true,
       "show_sub_when_single": true,
       "weight": 5
@@ -59,7 +61,6 @@
       "min_chars": 4,
       "name": "calc",
       "placeholder": "Calculator",
-      "prefix": "=",
       "require_number": true,
       "weight": 5
     },
@@ -97,7 +98,6 @@
       "history": true,
       "name": "emojis",
       "placeholder": "Emojis",
-      "prefix": ":",
       "show_unqualified": false,
       "switcher_only": true,
       "typeahead": true,
@@ -105,12 +105,14 @@
     },
     "finder": {
       "concurrency": 8,
-      "icon": "folder",
+      "icon": "file",
       "ignore_gitignore": true,
       "name": "finder",
       "placeholder": "Finder",
       "refresh": true,
+      "show_icon_when_single": true,
       "switcher_only": true,
+      "use_fd": false,
       "weight": 5
     },
     "runner": {
@@ -148,9 +150,6 @@
       "weight": 5
     },
     "websearch": {
-      "engines": [
-        "google"
-      ],
       "entries": [
         {
           "name": "Google",
@@ -186,7 +185,7 @@
     }
   },
   "disable_click_to_close": false,
-  "force_keyboard_focus": true,
+  "force_keyboard_focus": false,
   "hotreload_theme": false,
   "list": {
     "keyboard_scroll_style": "emacs",
@@ -199,11 +198,10 @@
   "monitor": "",
   "search": {
     "delay": 0,
-    "force_keyboard_focus": true,
-    "history": true,
     "placeholder": "Search...",
     "resume_last_query": false
   },
-  "theme": "catppuccin",
-  "timeout": 0
+  "theme": "default",
+  "timeout": 0,
+  "use_uwsm": false
 }
