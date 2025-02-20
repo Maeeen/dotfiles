@@ -34,10 +34,19 @@ window#waybar {
   padding: 0 6px;
 }
 
+#workspaces button.active {
+  background-color: rgba(0,255,255,.3);
+}
+
+#workspaces button.urgent {
+  background-color: rgba(255,0,0,.3);
+}
+
 window#waybar button {
   color: #fff;
   background: transparent;
   box-shadow: inset 0 0;
+  border-radius: 0px;
 }
 
 window#waybar button:hover {

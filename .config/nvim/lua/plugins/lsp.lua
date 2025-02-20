@@ -17,7 +17,11 @@ return {
     },
     ---@class PluginLspOpts
     opts = {
-      ---@type lspconfig.options
+      setup = {
+        rust_analyzer = function()
+          return true
+        end,
+      },
       servers = {
         tinymist = {
           --- todo: these configuration from lspconfig maybe broken
