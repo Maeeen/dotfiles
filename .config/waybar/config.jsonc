@@ -113,7 +113,7 @@
 	"custom/lock": {
 	    "format": "󰍁",
 	    "tooltip": false,
-	    "on-click": "hyprlock"
+	    "on-click": "loginctl lock-session"
 	},
 	"custom/reboot": {
 	    "format": "󰜉",

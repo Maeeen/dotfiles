@@ -23,6 +23,17 @@ return {
         end,
       },
       servers = {
+        kotlin_language_server = {
+          settings = {
+            kotlin = {
+              compiler = {
+                jvm = {
+                  target = "23",
+                },
+              },
+            },
+          },
+        },
         tinymist = {
           --- todo: these configuration from lspconfig maybe broken
           single_file_support = true,
