@@ -3,21 +3,12 @@
     "height": 30,
     "spacing": 4, // Gaps between modules (4px)
     "modules-left": [
-	    "custom/logo",
-        "hyprland/workspaces",
+        "custom/logo",
         "hyprland/submap",
         "custom/spotify"
     ],
-    "custom/spotify": {
-        "exec": "python3 $HOME/.config/waybar/custom/mediaplayer.py",
-        "format": "{} 󰎆",
-        "return-type": "json",
-        "on-click": "playerctl play-pause",
-        "on-click-right": "playerctl next",
-        "on-click-middle": "playerctl previous"
-    },
     "modules-center": [
-        "hyprland/window"
+        "hyprland/workspaces"
     ],
     "modules-right": [
         "idle_inhibitor",
@@ -29,11 +20,19 @@
         "battery",
         "clock",
         "tray",
-	    "group/power"
+        "group/power"
     ],
+    "custom/spotify": {
+        "exec": "python3 $HOME/.config/waybar/custom/mediaplayer.py",
+        "format": "{} 󰎆",
+        "return-type": "json",
+        "on-click": "playerctl play-pause",
+        "on-click-right": "playerctl next",
+        "on-click-middle": "playerctl previous"
+    },
     "custom/logo": {
         "format": "󰣇",
-	    "tooltip": false
+        "tooltip": false
     },
     "hyprland/submap": {
         "format": "<span style=\"italic\">{}</span>"
@@ -41,8 +40,8 @@
     "idle_inhibitor": {
         "format": "{icon}",
         "format-icons": {
-            "activated": "",
-            "deactivated": ""
+            "activated": " ",
+            "deactivated": " "
         }
     },
     "tray": {
@@ -62,10 +61,14 @@
     "temperature": {
         "critical-threshold": 80,
         "format": "{temperatureC}°C {icon}",
-        "format-icons": ["", "", ""]
+        "format-icons": [
+            "",
+            "",
+            ""
+        ]
     },
     "backlight": {
-        "format": "{percent}%",
+        "format": "{percent}%"
     },
     "battery": {
         "states": {
@@ -77,10 +80,16 @@
         "format-charging": "{capacity}% ",
         "format-plugged": "{capacity}% ",
         "format-alt": "{time} {icon}",
-        "format-icons": ["", "", "", "", ""]
+        "format-icons": [
+            "",
+            "",
+            "",
+            "",
+            ""
+        ]
     },
     "pulseaudio": {
-        "format": "{volume}% {icon} {format_source}",
+        "format": "<span size='12000'>{icon}</span>{volume}% {format_source}",
         "format-bluetooth": "{volume}% {icon} {format_source}",
         "format-bluetooth-muted": " {icon} {format_source}",
         "format-muted": " {format_source}",
@@ -93,36 +102,56 @@
             "phone": "",
             "portable": "",
             "car": "",
-            "default": ["", "", ""]
+            "default": [
+                "  ",
+                "  ",
+                "  "
+            ]
         },
-        "on-click": "pavucontrol"
+        "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
+        "on-scroll-up": "pactl set-sink-volume @DEFAULT_SINK@ +5%",
+        "on-scroll-down": "pactl set-sink-volume @DEFAULT_SINK@ -5%",
+        "on-click-right": "pavucontrol"
     },
+
+    // Power module
     "group/power": {
         "orientation": "inherit",
         "drawer": {
             "transition-duration": 500,
             "children-class": "not-power",
-            "transition-left-to-right": false,
-        }, "modules": [ "custom/power", "custom/quit", "custom/lock", "custom/reboot"]
+            "transition-left-to-right": false
+        },
+        "modules": [
+            "custom/power",
+            "custom/quit",
+            "custom/lock",
+            "custom/off",
+            "custom/reboot"
+        ]
     },
     "custom/quit": {
-	    "format": "󰗼",
-	    "tooltip": false,
-	    "on-click": "hyprctl dispatch exit"
-	},
-	"custom/lock": {
-	    "format": "󰍁",
-	    "tooltip": false,
-	    "on-click": "loginctl lock-session"
-	},
-	"custom/reboot": {
-	    "format": "󰜉",
-	    "tooltip": false,
-	    "on-click": "reboot"
-	},
-	"custom/power": {
-	"format": "",
-	"tooltip": false,
-	"on-click": "shutdown now"
+        "format": "󰗼",
+        "tooltip": false,
+        "on-click": "hyprctl dispatch exit"
+    },
+    "custom/lock": {
+        "format": "󰍁",
+        "tooltip": false,
+        "on-click": "loginctl lock-session"
+    },
+    "custom/reboot": {
+        "format": "󰜉",
+        "tooltip": false,
+        "on-click": "reboot"
+    },
+    "custom/off": {
+        "format": "",
+        "tooltip": false,
+        "on-click": "shutdown now"
+    },
+    "custom/power": {
+        "format": "⏽",
+        "tooltip": false
     }
 }

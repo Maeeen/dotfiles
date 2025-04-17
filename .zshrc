@@ -5,6 +5,13 @@
 export ZSH="$HOME/.oh-my-zsh"
 export HOSTNAME=$(cat /etc/hostname)
 
+# Find all the .sh files in ~/.config/rcs/ and source them
+for file in ~/.config/rcs/*.sh; do
+    if [ -f "$file" ]; then
+        source "$file"
+    fi
+done
+
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time Oh My Zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
