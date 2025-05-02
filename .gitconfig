@@ -1,0 +1,9 @@
+[user]
+	signingkey = 228FD572978BABA0
+	name = Marwan Azuz
+	email = marwanazuz+cinnabyte@gmail.com
+
+[core]
+	editor = nvim
+[commit]
+	gpgsign = true
