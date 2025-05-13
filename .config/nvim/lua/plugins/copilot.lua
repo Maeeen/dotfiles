@@ -4,7 +4,7 @@ return {
   event = "InsertEnter",
   config = function()
     require("copilot").setup({
-      copilot_node_command = vim.fn.expand("$HOME") .. "/.nvm/versions/node/v18.20.6/bin/node", -- Ensure Node.js version > 18.x
+      copilot_node_command = vim.fn.expand("$HOME") .. "/.nvm/versions/node/v23.11.0/bin/node", -- Ensure Node.js version > 18.x
       suggestion = { enabled = true },
       panel = { enabled = true },
       copilot_filetypes = { yaml = true, yml = true, markdown = true },
