@@ -21,5 +21,16 @@ function fish_prompt
         set_color normal
     end
 
+    if type -q git
+        set -l branch (command git rev-parse --abbrev-ref HEAD 2>/dev/null)
+        if test -n "$branch"
+            echo -n " ("
+            set_color green
+            echo -n $branch
+            set_color normal
+            echo -n ")"
+        end
+    end
+
     echo -n $symbol
 end
