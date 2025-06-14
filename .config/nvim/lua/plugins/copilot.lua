@@ -2,9 +2,11 @@ return {
   "zbirenbaum/copilot.lua",
   cmd = "Copilot",
   event = "InsertEnter",
+  opts = function()
+    require("copilot.api").status = require("copilot.status")
+  end,
   config = function()
     require("copilot").setup({
-      copilot_node_command = vim.fn.expand("$HOME") .. "/.nvm/versions/node/v23.11.0/bin/node", -- Ensure Node.js version > 18.x
       suggestion = { enabled = true },
       panel = { enabled = true },
       copilot_filetypes = { yaml = true, yml = true, markdown = true },
