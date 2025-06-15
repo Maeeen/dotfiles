@@ -34,6 +34,13 @@ return {
             },
           },
         },
+        qmlls = {
+          cmd = { "qmlls6", "-E" },
+          filetypes = { "qml", "qmljs" },
+          root_dir = function()
+            return vim.fn.getcwd()
+          end,
+        },
         tinymist = {
           --- todo: these configuration from lspconfig maybe broken
           single_file_support = true,
