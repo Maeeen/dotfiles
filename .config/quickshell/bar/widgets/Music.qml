@@ -47,12 +47,41 @@ Item {
     }
 
     Rectangle {
+        id: back
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        implicitWidth: content.implicitWidth
+        implicitHeight: parent.height
+        clip: true
+        color: currentPlayer.positionSupported ? "transparent" : getBackgroundColor(currentPlayer)
+
+        Rectangle {
+            visible: currentPlayer.positionSupported
+            color: getBackgroundColor(currentPlayer)
+            anchors.left: parent.left
+
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            implicitWidth: (root.currentPlayer.position / root.currentPlayer.length) * parent.width
+        }
+
+        Rectangle {
+            visible: currentPlayer.positionSupported
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            color: Qt.darker(getBackgroundColor(currentPlayer), 1.2)
+            anchors.right: parent.right
+            implicitWidth: (1 - (root.currentPlayer.position / root.currentPlayer.length)) * parent.width
+        }
+    }
+
+    Rectangle {
         id: content
 
         anchors.top: parent.top
         anchors.bottom: parent.bottom
         implicitWidth: Math.max(title.implicitWidth + 20, 150)
-        color: getBackgroundColor(currentPlayer)
+        color: "transparent"
         clip: true
 
         RowLayout {
@@ -162,18 +191,21 @@ Item {
                     }
                 }
                 GhostButton {
+                    visible: root.player.canControl && root.player.loopSupported
                     text: {
-                        if (root.player.loopStatus == MprisLoopStatus.None) {
-                            console.log("none")
-                            return "play_arrow";
-                        } else if (root.player.loopStatus == MprisLoopStatus.Track) {
-                            console.log("track")
-                            return "pause";
+                        if (root.player.loopState == MprisLoopState.Track) {
+                            return "repeat_one";
                         } else {
-                            console.log("playlist")
-                            return "play_arrow";
+                            return "repeat";
                         }
                     }
+                    onClicked: {
+                        const arr = [MprisLoopState.None, MprisLoopState.Playlist, MprisLoopState.Track];
+                        const currentIndex = arr.indexOf(root.player.loopState);
+                        const nextIndex = (currentIndex + 1) % arr.length;
+                        root.player.loopState = arr[nextIndex];
+                    }
+                    textColor: root.player.loopState == MprisLoopState.None ? Colors.text.disabled : Colors.text.color
                     font.family: "Material Icons"
                 }
             }

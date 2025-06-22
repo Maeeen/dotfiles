@@ -7,12 +7,7 @@ Singleton {
     id: root
 
     function c(str) {
-        return Qt.rgba(
-            parseInt(str.slice(1, 3), 16) / 255,
-            parseInt(str.slice(3, 5), 16) / 255,
-            parseInt(str.slice(5, 7), 16) / 255,
-            parseInt(str.slice(7, 9), 16) / 255,
-        );
+        return Qt.rgba(parseInt(str.slice(1, 3), 16) / 255, parseInt(str.slice(3, 5), 16) / 255, parseInt(str.slice(5, 7), 16) / 255, parseInt(str.slice(7, 9), 16) / 255);
     }
 
     readonly property Text text: Text {}
@@ -20,6 +15,7 @@ Singleton {
 
     component Text: QtObject {
         readonly property color color: "#ffffff"
+        readonly property color disabled: "#ccc"
         readonly property color activeColor: "#0fffff"
         readonly property int fontSize: 11
     }

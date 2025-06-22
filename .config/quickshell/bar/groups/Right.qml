@@ -6,5 +6,4 @@ import QtQuick.Layouts
 
 RowLayout {
     implicitHeight: parent.height
-    Music {} 
 }
