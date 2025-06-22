@@ -6,6 +6,10 @@ import QtQuick
 import QtQuick.Layouts
 
 RowLayout {
-    required property ShellScreen currentScreen;
-    Workspaces { screen: currentScreen }
+    implicitHeight: parent.height
+    required property ShellScreen currentScreen
+    Workspaces {
+        screen: currentScreen
+    }
+    Music {}
 }

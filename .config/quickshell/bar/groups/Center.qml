@@ -3,5 +3,12 @@ import Quickshell
 import Quickshell.Io
 import QtQuick
 import QtQuick.Layouts
+import Quickshell.Hyprland
 
-ClockWidget {}
+RowLayout {
+    implicitHeight: parent.height
+    Text {
+        text: Hyprland.activeToplevel.title
+    }
+    ClockWidget {}
+}
