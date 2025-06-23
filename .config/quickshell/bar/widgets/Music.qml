@@ -123,6 +123,7 @@ Item {
         const spotify = players.filter(p => p.identity == "Spotify");
         if (spotify)
             return spotify[0];
+        return players[0] || null
     }
 
     function getBackgroundColor(player) {
@@ -139,10 +140,12 @@ Item {
         anchors.top: content.bottom
 
         ColumnLayout {
+            id: columnMain
+            width: Math.max(content.implicitWidth, 200)
             IconImage {
                 Layout.alignment: Qt.AlignCenter
-                width: 100
-                height: 100
+                width: 150
+                height: 150
                 source: root.currentPlayer.trackArtUrl
             }
 
@@ -153,19 +156,52 @@ Item {
             }
 
             // Progress indicator
-            ProgressBar {
-                value: root.currentPlayer.position
-                implicitWidth: 200
-                Layout.fillWidth: true
-                Layout.preferredHeight: 20
-                Layout.alignment: Qt.AlignCenter
-                from: 0
-                to: root.currentPlayer.length
+            RowLayout {
+                height: 20
+
+                function formatDuration(seconds) {
+                    return `${Math.floor(seconds / 60).toString().padStart(1, '0')}:${(Math.floor(seconds) % 60).toString().padStart(2, '0')}`;
+                }
+
+                Text {
+                    text: parent.formatDuration(root.currentPlayer.position)
+                    color: Colors.text.color
+                }
+
+                Item {
+                    Layout.fillWidth: true
+                    height: 3
+                    Rectangle {
+                        color: Colors.c("#ffffff69")
+                        height: 3
+                        topLeftRadius: 3
+                        topRightRadius: 3
+                        bottomLeftRadius: 3
+                        bottomRightRadius: 3
+                        anchors.fill: parent
+                    }
+
+                    Rectangle {
+                        color: Colors.c("#ffffffff")
+                        height: 3
+                        topLeftRadius: 3
+                        topRightRadius: 3
+                        bottomLeftRadius: 3
+                        bottomRightRadius: 3
+                        width: (root.currentPlayer.position / root.currentPlayer.length) * parent.width
+                    }
+                }
+
+                Text {
+                    text: parent.formatDuration(root.currentPlayer.length)
+                    color: Colors.text.color
+                }
             }
 
             RowLayout {
                 Layout.alignment: Qt.AlignCenter
                 GhostButton {
+                    visible: !!root.player
                     text: "skip_previous"
                     font.family: "Material Icons"
                     onClicked: {
@@ -173,6 +209,7 @@ Item {
                     }
                 }
                 GhostButton {
+                    visible: !!root.player
                     text: root.player.playbackState == MprisPlaybackState.Playing ? "pause" : "play_arrow"
                     font.family: "Material Icons"
                     onClicked: {
@@ -184,6 +221,7 @@ Item {
                     }
                 }
                 GhostButton {
+                    visible: !!root.player
                     text: "skip_next"
                     font.family: "Material Icons"
                     onClicked: {
@@ -191,7 +229,7 @@ Item {
                     }
                 }
                 GhostButton {
-                    visible: root.player.canControl && root.player.loopSupported
+                    visible: !!root.player && root.player.canControl && root.player.loopSupported
                     text: {
                         if (root.player.loopState == MprisLoopState.Track) {
                             return "repeat_one";

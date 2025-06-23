@@ -6,8 +6,15 @@ import QtQuick
 Singleton {
     id: root
 
+    // State
+    property bool hovered: false
+
     function c(str) {
         return Qt.rgba(parseInt(str.slice(1, 3), 16) / 255, parseInt(str.slice(3, 5), 16) / 255, parseInt(str.slice(5, 7), 16) / 255, parseInt(str.slice(7, 9), 16) / 255);
+    }
+
+    function t(str, a) {
+        return Qt.rgba(parseInt(str.slice(1, 3), 16) / 255, parseInt(str.slice(3, 5), 16) / 255, parseInt(str.slice(5, 7), 16) / 255, a);
     }
 
     readonly property Text text: Text {}
@@ -47,27 +54,22 @@ Singleton {
                 position: 0.6
                 color: music
             }
-            // GradientStop {
-            //     position: 1.0
-            //     color: "transparent"
-            // }
         }
 
-        readonly property color color: c("#f470ca6f")
+        property color color: t("#f89abd", hovered ? 0.8 : 0.6)
+
+        Behavior on color {
+            ColorAnimation {
+                duration: 200
+                easing.type: Easing.InOutQuad
+            }
+        }
 
         readonly property Gradient gradient: Gradient {
             GradientStop {
                 position: 0.0
                 color: backgrounds.color
             }
-            // GradientStop {
-            //     position: 0.6
-            //     color: Qt.rgba(0.2, 0.2, 0.2, 1)
-            // }
-            // GradientStop {
-            //     position: 1.0
-            //     color: "transparent"
-            // }
         }
     }
 }

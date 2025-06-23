@@ -10,7 +10,7 @@ import QtQuick
 import QtQuick.Layouts
 
 Variants {
-    property real barHeight: 30
+    property real barHeight: Config.barHeight
     model: Quickshell.screens
 
     PanelWindow {
@@ -56,6 +56,16 @@ Variants {
             anchors.left: parent.left
             anchors.right: parent.right
             implicitHeight: barHeight
+        }
+
+        HoverHandler {
+            onHoveredChanged: {
+                if (hovered) {
+                    Colors.hovered = true;
+                } else {
+                    Colors.hovered = false;
+                }
+            }
         }
 
         Item {
