@@ -6,9 +6,9 @@ import QtQuick.Layouts
 import Quickshell.Hyprland
 
 RowLayout {
+    property var currentScreen
     implicitHeight: parent.height
-    Text {
-        text: Hyprland.activeToplevel.title
+    HyprWindowPicker {
+        screen: currentScreen
     }
-    ClockWidget {}
 }

@@ -6,4 +6,7 @@ import QtQuick.Layouts
 
 RowLayout {
     implicitHeight: parent.height
+
+    Tray {}
+    ClockWidget {}
 }

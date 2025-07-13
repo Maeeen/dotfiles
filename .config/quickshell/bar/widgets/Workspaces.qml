@@ -8,6 +8,13 @@ import QtQuick.Layouts
 RowLayout {
     required property ShellScreen screen
 
+    Behavior on width {
+        NumberAnimation {
+            duration: 100
+            easing.type: Easing.InOutQuad
+        }
+    }
+
     Text {
         Layout.leftMargin: 10
         font.pointSize: Colors.text.fontSize

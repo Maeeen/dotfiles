@@ -37,7 +37,7 @@ Variants {
 
         Variants {
             id: regions
-            model: PopupsState.popups
+            model: PopupsState.popups[window.screen] || []
             Region {
                 required property Item modelData
                 item: modelData
@@ -95,6 +95,7 @@ Variants {
             }
 
             Center {
+                currentScreen: modelData
                 anchors.centerIn: parent
             }
         }

@@ -11,5 +11,7 @@ RowLayout {
     Workspaces {
         screen: currentScreen
     }
-    Music {}
+    Music {
+        screen: currentScreen
+    }
 }
