@@ -5,6 +5,7 @@ return {
     opts = {
       ensure_installed = {
         "tinymist",
+        "kotlin-lsp",
       },
     },
   },
@@ -13,7 +14,7 @@ return {
     "neovim/nvim-lspconfig",
     dependencies = {
       "mason.nvim",
-      "williamboman/mason-lspconfig.nvim",
+      "mason-org/mason-lspconfig.nvim",
     },
     ---@class PluginLspOpts
     opts = {
@@ -24,15 +25,8 @@ return {
       },
       servers = {
         kotlin_language_server = {
-          settings = {
-            kotlin = {
-              compiler = {
-                jvm = {
-                  target = "23",
-                },
-              },
-            },
-          },
+          mason = false,
+          enabled = false,
         },
         qmlls = {
           cmd = { "qmlls6", "-E" },
