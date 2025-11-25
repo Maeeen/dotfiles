@@ -7,8 +7,8 @@ return {
   end,
   config = function()
     require("copilot").setup({
-      suggestion = { enabled = true },
-      panel = { enabled = true },
+      suggestion = { enabled = false },
+      panel = { enabled = false },
       copilot_filetypes = { yaml = true, yml = true, markdown = true },
       filetypes = {
         yaml = true,
@@ -23,4 +23,9 @@ return {
       },
     })
   end,
+  {
+    "zbirenbaum/copilot-cmp",
+    dependencies = { "zbirenbaum/copilot.lua" },
+    config = function() end,
+  },
 }

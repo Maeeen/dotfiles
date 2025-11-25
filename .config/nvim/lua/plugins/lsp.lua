@@ -48,6 +48,9 @@ return {
             exportPdf = "onType",
           },
         },
+        ["*"] = {
+          keys = { { "]]", false }, { "[[", false } },
+        },
       },
     },
   },
