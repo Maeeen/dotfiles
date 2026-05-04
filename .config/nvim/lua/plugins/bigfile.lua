@@ -9,5 +9,6 @@ return {
     -- refer to the configuration section below
     bigfile = { enabled = true },
     dashboard = { enabled = true },
+    image = { enabled = true },
   },
 }
