@@ -1,0 +1,29 @@
+output "DP-3" {
+    mode "2560x1440@165"
+    position x=-2560 y=0
+}
+output "DP-2" {
+    mode "2560x1440@165"
+    position x=0 y=0
+}
+output "HDMI-A-1" {
+    mode "2560x1440@143.91"
+    position x=2560 y=0
+}
+output "eDP-1" {
+    mode "preferred"
+}
+output "eDP-2" {
+    mode "preferred"
+}
+// For monitors identified by description, we use their name/description as identifier.
+// Note: Niri might require the actual output name (e.g., DP-1) instead of a description.
+output "AOC 27G2G3" {
+    mode "1920x1080@165"
+}
+output "HP Inc. HP V27i G5 CNC4262J6Z" {
+    mode "1920x1080@60"
+}
+output "AOC Q27G2SG4 XFXQ9HA001780" {
+    mode "2560x1440@144"
+}

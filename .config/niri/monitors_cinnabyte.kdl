@@ -1,0 +1,16 @@
+output "eDP-1" {
+    mode "preferred"
+}
+output "eDP-2" {
+    mode "preferred"
+}
+// For monitors identified by description
+output "AOC 27G2G3" {
+    mode "1920x1080@165"
+}
+output "HP Inc. HP V27i G5 CNC4262J6Z" {
+    mode "1920x1080@60"
+}
+output "AOC Q27G2SG4 XFXQ9HA001780" {
+    mode "2560x1440@144"
+}

@@ -1,0 +1,9 @@
+output "eDP-1" {
+    mode "preferred"
+}
+output "eDP-2" {
+    mode "preferred"
+}
+output "HDMI-A-1" {
+    mode "preferred"
+}

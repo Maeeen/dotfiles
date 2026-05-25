@@ -1,0 +1,107 @@
+// ~/.config/niri/config.kdl
+
+// Monitor configuration dynamically loaded based on hostname
+spawn-at-startup "handle_start.sh"
+include "monitors_current.kdl"
+prefer-no-csd
+
+spawn-at-startup "awww-daemon"
+spawn-at-startup "hypridle"
+spawn-at-startup "waybar"
+spawn-at-startup "elephant"
+spawn-at-startup "walker" "--gapplication-service"
+spawn-at-startup "dunst"
+spawn-at-startup "dbus-update-activation-environment" "--systemd" "WAYLAND_DISPLAY" "XDG_CURRENT_DESKTOP"
+
+input {
+    keyboard {
+        xkb {
+            layout "fr"
+            variant "oss"
+        }
+    }
+    touchpad {
+        tap
+        natural-scroll
+    }
+}
+
+binds {
+    // Core Actions
+    Mod+C { close-window; }
+    Mod+F { maximize-column; }
+    Mod+Q { spawn "kitty"; }
+    Mod+E { spawn "nautilus"; }
+    Mod+R { spawn "walker"; }
+    Mod+S { spawn "grimblast" "--freeze" "copy" "area"; }
+    Print { spawn "grimblast" "--freeze" "copy" "area"; }
+    Mod+A { spawn "loginctl" "lock-session"; }
+
+    // Window Management (Vim-style navigation)
+    Mod+H { focus-column-left; }
+    Mod+L { focus-column-right; }
+    Mod+J { focus-window-down; }
+    Mod+K { focus-window-up; }
+    Mod+Left { focus-column-left; }
+    Mod+Right { focus-column-right; }
+    Mod+Up { focus-window-up; }
+    Mod+Down { focus-window-down; }
+
+    // Workspace Management
+    // Emulate Hyprland with named workspaces (Anchors) using AZERTY keys
+    Mod+ampersand { focus-workspace 1; }
+    Mod+eacute { focus-workspace 2; }
+    Mod+quotedbl { focus-workspace 3; }
+    Mod+apostrophe { focus-workspace 4; }
+    Mod+parenleft { focus-workspace 5; }
+    Mod+minus { focus-workspace 6; }
+    Mod+egrave { focus-workspace 7; }
+    Mod+underscore { focus-workspace 8; }
+    Mod+ccedilla { focus-workspace 9; }
+    Mod+Shift+1 { move-column-to-workspace 1; }
+    Mod+Shift+2 { move-column-to-workspace 2; }
+    Mod+Shift+3 { move-column-to-workspace 3; }
+    Mod+Shift+4 { move-column-to-workspace 4; }
+    Mod+Shift+5 { move-column-to-workspace 5; }
+    Mod+Shift+6 { move-column-to-workspace 6; }
+    Mod+Shift+7 { move-column-to-workspace 7; }
+    Mod+Shift+8 { move-column-to-workspace 8; }
+    Mod+Shift+9 { move-column-to-workspace 9; }
+
+    // Native Niri Vertical Navigation (using Control)
+    Mod+Control+Up { focus-workspace-up; }
+    Mod+Control+Down { focus-workspace-down; }
+    Mod+Control+Shift+Up { move-workspace-up; }
+    Mod+Control+Shift+Down { move-workspace-down; }
+    Mod+WheelScrollRight      { focus-column-right; }
+    Mod+WheelScrollLeft       { focus-column-left; }
+
+    Mod+Comma  { consume-window-into-column; }
+
+    // Moving workspaces between monitors
+    Mod+Shift+Left { move-workspace-to-monitor-left; }
+    Mod+Shift+Right { move-workspace-to-monitor-right; }
+
+    XF86AudioRaiseVolume { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "5%+"; }
+    XF86AudioLowerVolume { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "5%-"; }
+    XF86AudioMute { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle"; }
+    XF86AudioPlay { spawn "playerctl" "play-pause"; }
+    XF86AudioNext { spawn "playerctl" "next"; }
+    XF86AudioPrev { spawn "playerctl" "previous"; }
+    XF86MonBrightnessUp { spawn "brightnessctl" "s" "10%+"; }
+    XF86MonBrightnessDown { spawn "brightnessctl" "s" "10%-"; }
+
+    // Workspace switching (mapping Hyprland's special chars to Niri columns/workspaces if possible)
+    // Since Niri uses columns, we focus on moving between them.
+    // Mod+Shift+Enter { move-window-to-new-column; }
+}
+
+window-rule {
+    match app-id="kitty"
+    opacity 0.95
+}
+
+layout {
+    gaps 10
+    // center-focused-column "always"
+}
