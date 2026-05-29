@@ -3,3 +3,4 @@
 -- Add any additional options here
 vim.o.shell = "/usr/bin/fish"
 vim.g.maplocalleader = ","
+vim.opt.clipboard = ""
