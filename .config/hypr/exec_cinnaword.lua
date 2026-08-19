@@ -1,0 +1,1 @@
+-- Per-host autostart for cinnaword (nothing yet)
