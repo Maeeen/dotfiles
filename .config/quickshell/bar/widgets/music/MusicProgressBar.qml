@@ -19,6 +19,7 @@ RowLayout {
     Text {
         text: parent.formatDuration(root.player.position)
         color: Colors.text.color
+        font.family: Colors.text.fontFamily
     }
 
     Item {
@@ -31,6 +32,7 @@ RowLayout {
             id: oops
             anchors.fill: parent
             hoverEnabled: true
+            cursorShape: Qt.PointingHandCursor
             onPositionChanged: function (m) {
                 sliderWhole.lastMouseEvent = m;
                 if (oops.containsPress) updatePosition();
@@ -47,7 +49,7 @@ RowLayout {
             }
         }
         Rectangle {
-            color: Colors.c("#ffffff69")
+            color: Colors.t("#ffffff", 0.41)
             height: 3
             topLeftRadius: 3
             topRightRadius: 3
@@ -60,7 +62,7 @@ RowLayout {
 
         Rectangle {
             id: left
-            color: Colors.c("#ffffffff")
+            color: Colors.t("#ffffff", 1)
             height: 3
             topLeftRadius: 3
             topRightRadius: 3
@@ -76,7 +78,7 @@ RowLayout {
             Layout.preferredHeight: 3
             width: hover.hovered ? 6 : 0
             height: hover.hovered ? 6 : 0
-            color: Colors.c("#ffffffff")
+            color: Colors.t("#ffffff", 1)
             radius: 3
             anchors.verticalCenter: left.verticalCenter
             anchors.left: left.right
@@ -100,5 +102,6 @@ RowLayout {
     Text {
         text: parent.formatDuration(root.player.length)
         color: Colors.text.color
+        font.family: Colors.text.fontFamily
     }
 }

@@ -14,5 +14,11 @@ function nbssh --description 'Pick a Netbird peer with fzf and SSH into it'
     test -z "$selected"; and return
 
     set fqdn (echo $selected | awk '{print $1}')
+    set title (string replace -r '\.netbird\.cloud$' '' $fqdn)
+
+    kitten @ set-window-title $title 2>/dev/null
     ssh $fqdn
+    set -l ssh_status $status
+    kitten @ set-window-title 2>/dev/null
+    return $ssh_status
 end

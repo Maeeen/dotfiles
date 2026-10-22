@@ -9,54 +9,58 @@ Singleton {
     // State
     property bool hovered: false
 
-    function c(str) {
-        return Qt.rgba(parseInt(str.slice(1, 3), 16) / 255, parseInt(str.slice(3, 5), 16) / 255, parseInt(str.slice(5, 7), 16) / 255, parseInt(str.slice(7, 9), 16) / 255);
-    }
-
     function t(str, a) {
         return Qt.rgba(parseInt(str.slice(1, 3), 16) / 255, parseInt(str.slice(3, 5), 16) / 255, parseInt(str.slice(5, 7), 16) / 255, a);
     }
 
     readonly property Text text: Text {}
+
+    // Text on a colored background: same hue, deep and saturated, easier on the eyes than black or gray
+    function textOn(bg) {
+        return Qt.hsla(bg.hslHue, Math.min(1, bg.hslSaturation + 0.2), 0.17, 1);
+    }
+
+    // Light text on a dark layer over a colored background
+    function lightTextOn(bg) {
+        return Qt.hsla(bg.hslHue, 0.8, 0.93, 1);
+    }
     readonly property Backgrounds backgrounds: Backgrounds {}
 
     component Text: QtObject {
-        readonly property color color: "#ffffff"
-        readonly property color disabled: "#ccc"
-        readonly property color activeColor: "#0fffff"
+        // White with a light tint of the pink bar color
+        readonly property color color: t("#fff0f5", 1)
+        readonly property color disabled: t("#cccccc", 1)
+        // Less important text, like the app name of a notification
+        readonly property color secondary: t("#fff0f5", 0.75)
+        readonly property color activeColor: t("#0fffff", 1)
+        readonly property color danger: t("#ff6b6b", 1)
+        readonly property color warning: t("#ffd166", 1)
+        // Symbols for icons; set it on the Text so Qt does not use the emoji font
+        readonly property string iconFont: "Noto Sans Symbols 2"
+        // Font of all the text of the bar
+        readonly property string fontFamily: "Iosevka Nerd Font"
         readonly property int fontSize: 11
     }
 
-    readonly property real barHeight: 30
-
-    readonly property color workspaceCircle: Qt.rgba(1, 1, 1, 0.2)
-    readonly property color workspaceCircleActive: Qt.rgba(1, 1, 1, 0.4)
-    readonly property color workspaceCircleUrgent: Qt.rgba(1, 0, 0, 0.4)
-    readonly property color workspaceText: Qt.rgba(1, 1, 1, 0.2)
-    readonly property color workspaceTextActive: Qt.rgba(1, 1, 1, 1)
+    readonly property color workspaceCircle: t("#ffffff", 0.2)
+    readonly property color workspaceCircleActive: t("#ffffff", 0.4)
+    readonly property color workspaceCircleUrgent: t("#ff0000", 0.4)
+    readonly property color workspaceText: t("#ffffff", 0.2)
+    readonly property color workspaceTextActive: text.color
 
     // Music
 
     component Backgrounds: QtObject {
         id: backgrounds
-        readonly property color spotify: Qt.rgba(.11, .72, .32, 1)
-        readonly property color music: Qt.rgba(0.961, 0.773, 0.259, 1)
+        readonly property color spotify: t("#1cb852", 1)
+        readonly property color music: t("#f5c542", 1)
+        readonly property color battery: t("#7dd18c", 1)
+        readonly property color batteryLow: t("#fab045", 1)
+        readonly property color batteryCritical: t("#f05c5c", 1)
 
-        readonly property Gradient spotifyGrad: Gradient {
-            GradientStop {
-                position: 0.6
-                color: spotify
-            }
-        }
-
-        readonly property Gradient musicGrad: Gradient {
-            GradientStop {
-                position: 0.6
-                color: music
-            }
-        }
-
-        property color color: t("#f89abd", hovered ? 0.8 : 0.6)
+        property color color: t("#f89abd", hovered ? 0.9 : 0.8)
+        // Darker variant of the bar color, for large panels
+        readonly property color panel: t("#3b2630", 0.75)
 
         Behavior on color {
             ColorAnimation {

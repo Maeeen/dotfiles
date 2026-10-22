@@ -11,12 +11,13 @@ Button {
     padding: 4
     palette.buttonText: textColor
 
+    HoverHandler {
+        cursorShape: Qt.PointingHandCursor
+    }
+
     background: Rectangle {
         implicitHeight: 24
         implicitWidth: 24
-        radius: 6
-        border.width: 1
-        color: "transparent"
-        border.color: btn.down ? Qt.darker(btn.color, 1.5) : (btn.hovered ? Qt.darker(btn.color, 1.25) : "transparent")
+        color: btn.down ? Qt.rgba(1, 1, 1, 0.25) : (btn.hovered ? Qt.rgba(1, 1, 1, 0.15) : "transparent")
     }
 }

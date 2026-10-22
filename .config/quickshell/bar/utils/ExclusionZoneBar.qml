@@ -6,7 +6,7 @@ Variants {
 
     PanelWindow {
         property var modelData
-        property var barHeight: 30
+        property var barHeight: Config.barHeight
 
         screen: modelData
         implicitHeight: barHeight

@@ -11,22 +11,14 @@ Rectangle {
 
     default property alias content: actualContent.data
 
-    property real sImplicitWidth: (actualContent.children[selectedIndex]) ? actualContent.children[selectedIndex].implicitWidth : 0
-    property real sImplicitHeight: (actualContent.children[selectedIndex]) ? actualContent.children[selectedIndex].implicitHeight : 0
-    property real sWidth: (actualContent.children[selectedIndex]) ? actualContent.children[selectedIndex].width : 0
-    property real sHeight: (actualContent.children[selectedIndex]) ? actualContent.children[selectedIndex].height : 0
+    // Bindings on selectedItem, so the size follows when a tab is added later (e.g. a new player)
+    property real sImplicitWidth: selectedItem?.implicitWidth ?? 0
+    property real sImplicitHeight: selectedItem?.implicitHeight ?? 0
+    property real sWidth: selectedItem?.width ?? 0
+    property real sHeight: selectedItem?.height ?? 0
 
     implicitWidth: sImplicitWidth
     implicitHeight: sImplicitHeight
-
-    Component.onCompleted: {
-        Qt.callLater(() => {
-            sImplicitWidth = (actualContent.children[selectedIndex]) ? actualContent.children[selectedIndex].implicitWidth : 0;
-            sImplicitHeight = (actualContent.children[selectedIndex]) ? actualContent.children[selectedIndex].implicitHeight : 0;
-            sWidth = (actualContent.children[selectedIndex]) ? actualContent.children[selectedIndex].width : 0;
-            sHeight = (actualContent.children[selectedIndex]) ? actualContent.children[selectedIndex].height : 0;
-        });
-    }
 
     width: Math.min(100, sWidth)
     height: Math.min(100, sHeight)
@@ -45,9 +37,13 @@ Rectangle {
         }
     }
 
+    // Repeaters are children too, and they reorder their delegates without a childrenChanged
+    // signal, so indexing children directly can return the Repeater. Skip them.
+    property Item selectedItem: Array.from(actualContent.children).filter(c => !(c instanceof Repeater))[selectedIndex] ?? null
+
     RowLayout {
         id: actualContent
-        x: (actualContent.children[root.selectedIndex] ? -actualContent.children[root.selectedIndex].x : 0)
+        x: root.selectedItem ? -root.selectedItem.x : 0
 
         width: root.width
         height: root.height

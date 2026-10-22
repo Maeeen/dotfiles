@@ -11,4 +11,7 @@ RowLayout {
     HyprWindowPicker {
         screen: currentScreen
     }
+    NotifToast {
+        screen: currentScreen
+    }
 }

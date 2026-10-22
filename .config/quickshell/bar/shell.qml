@@ -66,4 +66,5 @@ import Quickshell.Hyprland
 Scope {
     ExclusionZoneBar {}
     Bar {}
+    Lock {}
 }

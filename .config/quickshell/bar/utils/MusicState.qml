@@ -20,10 +20,10 @@ Singleton {
     function pickPlayer(players) {
         // Priority, pick one that plays
         const playing = players.filter(p => p.isPlaying);
-        if (playing)
+        if (playing.length)
             return playing[0];
         const spotify = players.filter(p => p.identity == "Spotify");
-        if (spotify)
+        if (spotify.length)
             return spotify[0];
         return players[0] || null;
     }

@@ -44,11 +44,25 @@ Variants {
             }
         }
 
+        Region {
+            id: panelRegion
+            item: notifPanel.panel
+        }
+
         mask: Region {
-            regions: [baseRegion, ...regions.instances]
+            regions: [baseRegion, panelRegion, ...regions.instances]
         }
 
         implicitHeight: modelData.height
+
+        // First child, so it is under the bar and its popups
+        NotifPanel {
+            id: notifPanel
+            shown: Notifs.panelOpen && window.screen === Notifs.screen
+            anchors.right: parent.right
+            y: barHeight
+            height: window.height - barHeight
+        }
 
         Rectangle {
             id: gradient
@@ -79,6 +93,14 @@ Variants {
                 Left {
                     currentScreen: modelData
                     Layout.alignment: Qt.AlignLeft
+                    Layout.fillHeight: true
+
+                    // Workaround for a Qt 6.12 bug: RowLayout wrongly caches that all its children
+                    // stay in its bounds, so it drops hover events on popups below the bar.
+                    // The margin puts this item out of bounds, which stops the wrong caching.
+                    HoverHandler {
+                        margin: 1
+                    }
                 }
 
                 Item {
@@ -90,7 +112,13 @@ Variants {
                 }
 
                 Right {
+                    currentScreen: modelData
                     Layout.alignment: Qt.AlignRight
+
+                    // Same Qt 6.12 workaround as on Left.
+                    HoverHandler {
+                        margin: 1
+                    }
                 }
             }
 
