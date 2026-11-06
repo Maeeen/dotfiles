@@ -7,6 +7,9 @@ Singleton {
 
     // Initialize popups as a JavaScript object (dictionary)
     property var popups: ({})
+    // Name of the screen where a popup has a text field (for example a password), "" when none.
+    // The bar window of that screen takes the keyboard.
+    property string keyboardScreen: ""
 
     function open(screen, popup) {
         if (!screen || !popup) {

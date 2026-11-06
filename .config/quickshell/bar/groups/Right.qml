@@ -17,7 +17,33 @@ RowLayout {
             margin: 1
         }
     }
+    Privacy {
+        screen: currentScreen
+
+        // Same Qt 6.12 workaround as on Tray.
+        HoverHandler {
+            margin: 1
+        }
+    }
+    Display {
+        id: display
+        screen: currentScreen
+
+        // Same Qt 6.12 workaround as on Tray.
+        HoverHandler {
+            margin: 1
+        }
+    }
     Audio {
+        screen: currentScreen
+        osdSuppressed: display.open
+
+        // Same Qt 6.12 workaround as on Tray.
+        HoverHandler {
+            margin: 1
+        }
+    }
+    Network {
         screen: currentScreen
 
         // Same Qt 6.12 workaround as on Tray.
@@ -33,7 +59,30 @@ RowLayout {
             margin: 1
         }
     }
-    SysStats {}
-    Battery {}
+    SysStats {
+        screen: currentScreen
+
+        // Same Qt 6.12 workaround as on Tray.
+        HoverHandler {
+            margin: 1
+        }
+    }
+    Battery {
+        screen: currentScreen
+
+        // Same Qt 6.12 workaround as on Tray.
+        HoverHandler {
+            margin: 1
+        }
+    }
+    Weather {
+        screen: currentScreen
+
+        // Same Qt 6.12 workaround as on Tray.
+        HoverHandler {
+            margin: 1
+        }
+    }
+    NextEvent {}
     ClockWidget {}
 }

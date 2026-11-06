@@ -11,6 +11,7 @@ RowLayout {
     Workspaces {
         screen: currentScreen
     }
+    Submap {}
     Music {
         screen: currentScreen
     }

@@ -10,8 +10,7 @@ import "root:/utils"
 
 Item {
     id: root
-    anchors.top: parent.top
-    anchors.bottom: parent.bottom
+    Layout.fillHeight: true
     // width: content.implicitWidth
     // height: parent.height
 
@@ -19,7 +18,8 @@ Item {
 
     Text {
         id: content
-        text: Hyprland.activeToplevel.title
+        // No focused window, for example on an empty workspace
+        text: Hyprland.activeToplevel?.title ?? ""
         font.family: Colors.text.fontFamily
         anchors.horizontalCenter: parent.horizontalCenter
         // Fixed baseline from the main font: a character from a fallback font (e.g. "✳")

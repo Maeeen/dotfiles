@@ -14,6 +14,10 @@ Item {
     // Full bar height, so the hover area matches the bar
     Layout.fillHeight: true
 
+    Behavior on implicitWidth {
+        WidthAnimation {}
+    }
+
     Rectangle {
         anchors.fill: parent
         color: Notifs.panelOpen ? Colors.workspaceCircle : "transparent"

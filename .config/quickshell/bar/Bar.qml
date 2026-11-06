@@ -6,6 +6,7 @@ import "root:/utils"
 import Quickshell
 import Quickshell.Io
 import Quickshell.Hyprland
+import Quickshell.Wayland
 import QtQuick
 import QtQuick.Layouts
 
@@ -54,6 +55,17 @@ Variants {
         }
 
         implicitHeight: modelData.height
+
+        // The launcher takes the keyboard while it is open; a click outside of the bar closes it.
+        // A popup with a text field also takes the keyboard.
+        readonly property bool launcherOpen: LauncherState.screenName === modelData.name
+        WlrLayershell.keyboardFocus: launcherOpen || PopupsState.keyboardScreen === modelData.name ? WlrKeyboardFocus.OnDemand : WlrKeyboardFocus.None
+
+        HyprlandFocusGrab {
+            windows: [window]
+            active: window.launcherOpen
+            onCleared: LauncherState.close()
+        }
 
         // First child, so it is under the bar and its popups
         NotifPanel {
@@ -126,6 +138,12 @@ Variants {
                 currentScreen: modelData
                 anchors.centerIn: parent
             }
+        }
+
+        Launcher {
+            screen: modelData
+            anchors.horizontalCenter: parent.horizontalCenter
+            y: barHeight
         }
     }
 }

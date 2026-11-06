@@ -12,8 +12,8 @@ Item {
     property real size: 160
     readonly property bool white: clockState.white
     property color dialColor: white ? Colors.t("#ffffff", 1) : Qt.rgba(1, 1, 1, 0.08)
-    property color faceColor: white ? Colors.t("#000000", 1) : Colors.text.color
-    property color secondsColor: white ? Colors.t("#eb0000", 1) : "#f89abd"
+    property color faceColor: white ? Colors.t("#000000", 1) : Colors.panelText.color
+    property color secondsColor: white ? Colors.t("#eb0000", 1) : Colors.t(Theme.current.barStart, 1)
 
     // Keeps the choice in a JSON file, also after a restart
     FileView {

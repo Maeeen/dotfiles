@@ -18,6 +18,7 @@ Item {
 
     onOpenedChanged: {
         if (opened) {
+            windowX = mapToItem(null, 0, 0).x;
             PopupsState.open(screen, this);
         } else if (!opened) {
             PopupsState.close(screen, this);
@@ -53,6 +54,8 @@ Item {
     }
     property real margins: 14
     property var screen
+    // Position of the popup in the bar window, so the background follows the bar gradient
+    property real windowX: 0
 
     // Radius of the bottom corners, and of the inverted corners that join the popup to the bar.
     property real radius: 20
@@ -77,20 +80,19 @@ Item {
 
         ShapePath {
             strokeWidth: -1
-            // Same color as the bar at the top, so the popup joins the bar.
-            // A small white tint at the bottom gives depth.
+            // The bar gradient, placed over the full window width, so the popup joins the bar.
             fillGradient: LinearGradient {
-                x1: 0
+                x1: root.radius - root.windowX
                 y1: 0
-                x2: 0
-                y2: root.height
+                x2: root.radius - root.windowX + root.Window.width
+                y2: 0
                 GradientStop {
                     position: 0.0
                     color: Colors.backgrounds.color
                 }
                 GradientStop {
                     position: 1.0
-                    color: Qt.tint(Colors.backgrounds.color, Qt.rgba(1, 1, 1, 0.12))
+                    color: Colors.backgrounds.colorEnd
                 }
             }
 
@@ -146,6 +148,23 @@ Item {
         id: body
         anchors.fill: parent
         clip: true
+
+        // A small white tint at the bottom gives depth
+        Rectangle {
+            anchors.fill: parent
+            bottomLeftRadius: root.cornerRadius
+            bottomRightRadius: root.cornerRadius
+            gradient: Gradient {
+                GradientStop {
+                    position: 0.0
+                    color: "transparent"
+                }
+                GradientStop {
+                    position: 1.0
+                    color: Qt.rgba(1, 1, 1, 0.12)
+                }
+            }
+        }
 
         Item {
             id: actualContent

@@ -48,7 +48,6 @@ end
 
 local terminal = "kitty"
 local fileManager = "nautilus"
-local menu = "walker"
 
 -------------------
 ---- AUTOSTART ----
@@ -58,8 +57,6 @@ hl.on("hyprland.start", function()
 	hl.exec_cmd("awww-daemon")
 	hl.exec_cmd("hypridle")
 	hl.exec_cmd("qs -c bar -d")
-	hl.exec_cmd("elephant")
-	hl.exec_cmd("walker --gapplication-service")
 	hl.exec_cmd("dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP")
 end)
 
@@ -268,7 +265,8 @@ hl.bind(mainMod .. " + Q", hl.dsp.exec_cmd(terminal))
 hl.bind(mainMod .. " + C", hl.dsp.window.close())
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
 hl.bind(mainMod .. " + F", hl.dsp.window.float({ action = "toggle" }))
-hl.bind(mainMod .. " + R", hl.dsp.exec_cmd(menu))
+hl.bind(mainMod .. " + R", hl.dsp.global("quickshell:launcher"))
+hl.bind(mainMod .. " + T", hl.dsp.global("quickshell:launcher"))
 hl.bind(mainMod .. " + P", hl.dsp.window.pseudo()) -- dwindle
 hl.bind(mainMod .. " + s", hl.dsp.layout("togglesplit"))
 
@@ -339,8 +337,8 @@ hl.bind(
 	hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"),
 	{ locked = true, repeating = true }
 )
-hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd("brightnessctl s 10%+"), { locked = true, repeating = true })
-hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("brightnessctl s 10%-"), { locked = true, repeating = true })
+hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd("qs -c bar ipc call brightness up || brightnessctl s 10%+"), { locked = true, repeating = true })
+hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("qs -c bar ipc call brightness down || brightnessctl s 10%-"), { locked = true, repeating = true })
 
 -- Media keys
 hl.bind("XF86AudioPlay", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true }) -- the stupid key is called play, but it toggles

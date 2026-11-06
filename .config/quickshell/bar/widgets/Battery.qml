@@ -1,12 +1,22 @@
 import "root:/config"
+import "root:/utils"
+import Quickshell.Io
 import Quickshell.Services.UPower
 import QtQuick
 import QtQuick.Layouts
 
 // Same design as the music element: constant width,
 // the background is filled to the battery level.
+// A click opens a popup with the battery graph and the power profiles.
 Item {
     id: root
+    property var screen
+    property bool open: false
+    // One sample each minute, for up to 6 hours
+    readonly property int historySize: 360
+    property var history: []
+    // power-profiles-daemon is necessary to change the profile
+    property bool profilesAvailable: false
     property UPowerDevice device: UPower.displayDevice
     property real percentage: device.percentage
     property bool charging: device.state == UPowerDeviceState.Charging || device.state == UPowerDeviceState.FullyCharged
@@ -18,6 +28,59 @@ Item {
     visible: device.ready && device.isLaptopBattery
     implicitWidth: 64
     Layout.fillHeight: true
+
+    // "2 h 10 min left", "1 h 5 min to full"
+    function timeText() {
+        const s = charging ? device.timeToFull : device.timeToEmpty;
+        if (full)
+            return "Full";
+        if (!(s > 0))
+            return charging ? "Charging" : "";
+        const h = Math.floor(s / 3600);
+        const m = Math.round(s % 3600 / 60);
+        return (h > 0 ? `${h} h ${m} min` : `${m} min`) + (charging ? " to full" : " left");
+    }
+
+    function durationText(minutes) {
+        return minutes < 60 ? `${minutes} min` : `${(minutes / 60).toFixed(minutes < 600 ? 1 : 0)} h`;
+    }
+
+    Timer {
+        interval: 60000
+        running: root.visible
+        repeat: true
+        triggeredOnStart: true
+        onTriggered: root.history = root.history.concat([root.percentage]).slice(-root.historySize)
+    }
+
+    // Is power-profiles-daemon on the system bus?
+    Process {
+        running: root.open
+        command: ["busctl", "--system", "status", "org.freedesktop.UPower.PowerProfiles"]
+        onExited: code => root.profilesAvailable = code === 0
+        stdout: StdioCollector {}
+    }
+
+    // Close the popup when the mouse is on neither the battery nor the popup
+    property bool hovered: buttonHover.hovered || popupHover.hovered
+    onHoveredChanged: {
+        if (hovered) {
+            closeDelay.stop();
+        } else if (open) {
+            closeDelay.restart();
+        }
+    }
+
+    Timer {
+        id: closeDelay
+        // Give the mouse time to move from the battery to the popup
+        interval: Config.popupCloseDelay
+        onTriggered: root.open = false
+    }
+
+    HoverHandler {
+        id: buttonHover
+    }
 
     // Charged part
     Rectangle {
@@ -107,6 +170,131 @@ Item {
             width: 2
             height: 4
             color: root.textColor
+        }
+    }
+
+    HoverArea {
+        anchors.fill: parent
+        onClicked: root.open = !root.open
+    }
+
+    PopupWrapper {
+        id: popup
+        requestOpen: root.open
+        anchors.right: parent.right
+        anchors.top: parent.bottom
+        screen: root.screen
+
+        ColumnLayout {
+            width: 280
+            spacing: 4
+
+            RowLayout {
+                Layout.fillWidth: true
+
+                Text {
+                    Layout.fillWidth: true
+                    text: `Battery ${Math.round(root.percentage * 100)}%`
+                    color: Colors.text.secondary
+                    font.pointSize: Colors.text.fontSize
+                    font.family: Colors.text.fontFamily
+                    font.weight: Font.Medium
+                }
+
+                Text {
+                    text: root.timeText()
+                    color: Colors.text.color
+                    font.pointSize: Colors.text.fontSize
+                    font.family: Colors.text.fontFamily
+                }
+            }
+
+            Graph {
+                Layout.fillWidth: true
+                values: root.history
+                count: Math.max(2, root.history.length)
+                color: root.backgroundColor
+            }
+
+            Text {
+                text: root.history.length > 1 ? `Last ${root.durationText(root.history.length - 1)}` : "The graph starts in a minute"
+                color: Colors.text.secondary
+                font.pointSize: Colors.text.fontSize - 2
+                font.family: Colors.text.fontFamily
+            }
+
+            Text {
+                Layout.topMargin: 6
+                text: "Power profile"
+                color: Colors.text.secondary
+                font.pointSize: Colors.text.fontSize
+                font.family: Colors.text.fontFamily
+                font.weight: Font.Medium
+            }
+
+            RowLayout {
+                visible: root.profilesAvailable
+                Layout.fillWidth: true
+                spacing: 4
+
+                Repeater {
+                    model: [
+                        { profile: PowerProfile.PowerSaver, label: "Saver" },
+                        { profile: PowerProfile.Balanced, label: "Balanced" },
+                        { profile: PowerProfile.Performance, label: "Performance" }
+                    ].filter(p => p.profile !== PowerProfile.Performance || PowerProfiles.hasPerformanceProfile)
+
+                    Rectangle {
+                        required property var modelData
+                        readonly property bool selected: PowerProfiles.profile === modelData.profile
+                        Layout.fillWidth: true
+                        implicitHeight: 26
+                        radius: 6
+                        color: selected ? Colors.workspacePill : Colors.workspaceCircle
+
+                        Behavior on color {
+                            ColorAnimation {
+                                duration: 120
+                                easing.type: Easing.InOutQuad
+                            }
+                        }
+
+                        Text {
+                            anchors.centerIn: parent
+                            text: parent.modelData.label
+                            color: parent.selected ? Colors.workspaceNumber : Colors.text.color
+                            font.pointSize: Colors.text.fontSize - 1
+                            font.family: Colors.text.fontFamily
+                            font.weight: parent.selected ? Font.Medium : Font.Normal
+                        }
+
+                        HoverArea {
+                            anchors.fill: parent
+                            radius: parent.radius
+                            onClicked: PowerProfiles.profile = parent.modelData.profile
+                        }
+                    }
+                }
+            }
+
+            Text {
+                visible: !root.profilesAvailable
+                Layout.fillWidth: true
+                wrapMode: Text.WordWrap
+                text: "power-profiles-daemon is not running"
+                color: Colors.text.disabled
+                font.pointSize: Colors.text.fontSize - 1
+                font.family: Colors.text.fontFamily
+            }
+        }
+    }
+
+    // Covers the popup with its margins, so the mouse on it keeps it open
+    Item {
+        anchors.fill: popup
+
+        HoverHandler {
+            id: popupHover
         }
     }
 }

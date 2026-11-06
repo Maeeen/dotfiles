@@ -26,6 +26,10 @@ Item {
     Layout.preferredWidth: button.width
     implicitHeight: parent.height
 
+    Behavior on Layout.preferredWidth {
+        WidthAnimation {}
+    }
+
     function deviceName(device) {
         return device.name || device.deviceName || device.address;
     }

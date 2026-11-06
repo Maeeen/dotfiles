@@ -14,6 +14,8 @@ Item {
     id: root
     property var screen
     property bool open: false
+    // No OSD while another popup (e.g. the display popup) is open under it
+    property bool osdSuppressed: false
     // "devices" or "playback"
     property string page: "devices"
 
@@ -27,6 +29,10 @@ Item {
 
     Layout.preferredWidth: button.width
     implicitHeight: parent.height
+
+    Behavior on Layout.preferredWidth {
+        WidthAnimation {}
+    }
 
     // The audio properties (volume, muted) are only valid on bound nodes
     PwObjectTracker {
@@ -249,6 +255,14 @@ Item {
                 }
             }
         }
+    }
+
+    Osd {
+        anchors.right: button.right
+        anchors.top: button.bottom
+        screen: root.screen
+        sink: root.sink
+        suppressed: root.open || root.hovered || root.osdSuppressed
     }
 
     // An item of the popup is lit when the mouse position of the popup HoverHandler is in it.

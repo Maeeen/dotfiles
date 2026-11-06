@@ -94,10 +94,12 @@ Rectangle {
             }
         }
 
+        // Not shown when the icon theme does not have the icon
         IconImage {
-            visible: !!menuRow.entry?.icon
+            readonly property string icon: menuRow.entry?.icon ?? ""
+            visible: source != ""
             implicitSize: 16
-            source: menuRow.entry?.icon ?? ""
+            source: icon.startsWith("image://icon/") ? Quickshell.iconPath(icon.slice(13), true) : icon
         }
 
         Text {

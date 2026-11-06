@@ -50,8 +50,8 @@ Item {
         Text {
             anchors.horizontalCenter: parent.horizontalCenter
             text: Qt.formatDateTime(clock.date, "dddd, MMMM d")
-            color: Colors.text.secondary
-            font.family: Colors.text.fontFamily
+            color: Colors.panelText.secondary
+            font.family: Colors.panelText.fontFamily
             font.pixelSize: 22
 
             SystemClock {
@@ -64,8 +64,8 @@ Item {
             anchors.horizontalCenter: parent.horizontalCenter
             topPadding: 16
             text: Quickshell.env("USER")
-            color: Colors.text.color
-            font.family: Colors.text.fontFamily
+            color: Colors.panelText.color
+            font.family: Colors.panelText.fontFamily
             font.pixelSize: 28
             font.bold: true
         }
@@ -80,11 +80,11 @@ Item {
             echoMode: TextInput.Password
             passwordCharacter: "●"
             horizontalAlignment: TextInput.AlignHCenter
-            color: Colors.text.color
-            font.family: Colors.text.fontFamily
+            color: Colors.panelText.color
+            font.family: Colors.panelText.fontFamily
             font.pixelSize: 18
             placeholderText: root.lock.failed ? "Authentication failed" : "Input Password…"
-            placeholderTextColor: root.lock.failed ? Colors.text.danger : Colors.text.secondary
+            placeholderTextColor: root.lock.failed ? Colors.panelText.danger : Colors.panelText.secondary
 
             text: root.lock.password
             onTextEdited: {
@@ -99,7 +99,7 @@ Item {
                 radius: height / 2
                 color: Qt.rgba(0, 0, 0, 0.2)
                 border.width: 2
-                border.color: root.lock.busy ? "#cc8822" : root.lock.failed ? Colors.text.danger : Qt.rgba(1, 1, 1, 0.15)
+                border.color: root.lock.busy ? "#cc8822" : root.lock.failed ? Colors.panelText.danger : Qt.rgba(1, 1, 1, 0.15)
 
                 Behavior on border.color {
                     ColorAnimation {
@@ -147,8 +147,8 @@ Item {
         Text {
             anchors.horizontalCenter: parent.horizontalCenter
             text: "Caps Lock is on"
-            color: Colors.text.warning
-            font.family: Colors.text.fontFamily
+            color: Colors.panelText.warning
+            font.family: Colors.panelText.fontFamily
             font.pixelSize: 14
             opacity: root.lock.capsLock ? 1 : 0
         }

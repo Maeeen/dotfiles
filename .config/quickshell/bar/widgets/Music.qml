@@ -22,10 +22,22 @@ Item {
     // Feedback overlay state: "playpause", "next", "previous" or "volume"
     property string flashKind: ""
 
-    // Hidden when no music player is detected
-    visible: root.players.length > 0
-    Layout.preferredWidth: content.width
+    // Hidden when no music player is detected. It grows in and shrinks out.
+    readonly property bool shown: root.players.length > 0
+    visible: Layout.preferredWidth > 0
+    opacity: shown ? 1 : 0
+    Layout.preferredWidth: shown ? content.width : 0
+    // Takes the layout spacing away while it shrinks, so the next items do not jump at the end
+    Layout.leftMargin: content.width > 0 ? parent.spacing * (Layout.preferredWidth / content.width - 1) : 0
     Layout.fillHeight: true
+
+    Behavior on Layout.preferredWidth {
+        WidthAnimation {}
+    }
+
+    Behavior on opacity {
+        WidthAnimation {}
+    }
 
     MouseArea {
         id: hover
@@ -217,7 +229,7 @@ Item {
 
     PopupWrapper {
         id: popup
-        requestOpen: root.requestOpen && root.visible
+        requestOpen: root.requestOpen && root.shown
         anchors.left: content.left
         anchors.top: content.bottom
         screen: root.screen

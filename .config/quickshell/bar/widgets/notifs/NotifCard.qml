@@ -71,15 +71,16 @@ Rectangle {
                     // One text, so the app name wraps to the next line before the title does
                     Text {
                         Layout.fillWidth: true
-                        text: `<b>${root.escapeHtml(root.notification?.summary)}</b>&nbsp;&nbsp;<font color="${Colors.text.secondary}">${root.escapeHtml(root.notification?.appName)}</font>`
+                        text: `<b>${root.escapeHtml(root.notification?.summary)}</b>&nbsp;&nbsp;<font color="${Colors.panelText.secondary}">${root.escapeHtml(root.notification?.appName)}</font>`
                         textFormat: Text.StyledText
                         wrapMode: Text.Wrap
-                        color: Colors.text.color
-                        font.pointSize: Colors.text.fontSize
-                        font.family: Colors.text.fontFamily
+                        color: Colors.panelText.color
+                        font.pointSize: Colors.panelText.fontSize
+                        font.family: Colors.panelText.fontFamily
                     }
 
                     GhostButton {
+                        textColor: Colors.panelText.color
                         Layout.alignment: Qt.AlignTop
                         text: "×"
                         onClicked: root.closeClicked()
@@ -94,9 +95,9 @@ Rectangle {
                     wrapMode: Text.Wrap
                     maximumLineCount: 5
                     elide: Text.ElideRight
-                    color: Colors.text.color
-                    font.pointSize: Colors.text.fontSize
-                    font.family: Colors.text.fontFamily
+                    color: Colors.panelText.color
+                    font.pointSize: Colors.panelText.fontSize
+                    font.family: Colors.panelText.fontFamily
                 }
             }
 
@@ -136,9 +137,9 @@ Rectangle {
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
                             elide: Text.ElideRight
-                            color: Colors.text.color
-                            font.pointSize: Colors.text.fontSize
-                            font.family: Colors.text.fontFamily
+                            color: Colors.panelText.color
+                            font.pointSize: Colors.panelText.fontSize
+                            font.family: Colors.panelText.fontFamily
                         }
 
                         HoverArea {

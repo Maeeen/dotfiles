@@ -25,6 +25,10 @@ Item {
     Layout.preferredWidth: content.width
     implicitHeight: parent.height
 
+    Behavior on Layout.preferredWidth {
+        WidthAnimation {}
+    }
+
     function toggleMenu(item) {
         if (openItem === item) {
             openItem = null;

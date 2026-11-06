@@ -1,3 +1,5 @@
+//@ pragma IconTheme breeze-dark
+import "root:/config"
 import "root:/utils"
 import Quickshell
 import QtQuick
@@ -67,4 +69,10 @@ Scope {
     ExclusionZoneBar {}
     Bar {}
     Lock {}
+
+    LazyLoader {
+        active: Theme.settingsOpen
+
+        SettingsWindow {}
+    }
 }

@@ -23,6 +23,13 @@ Item {
     // Stay visible until the slide-out is done
     visible: shown || panel.x < panel.width
 
+    onShownChanged: {
+        if (shown) {
+            CalendarEvents.refresh();
+            calendar.reset();
+        }
+    }
+
     Rectangle {
         id: panel
         width: parent.width
@@ -46,18 +53,20 @@ Item {
                     Layout.fillWidth: true
                     text: "Notifications"
                     font.bold: true
-                    color: Colors.text.color
-                    font.pointSize: Colors.text.fontSize
-                    font.family: Colors.text.fontFamily
+                    color: Colors.panelText.color
+                    font.pointSize: Colors.panelText.fontSize
+                    font.family: Colors.panelText.fontFamily
                 }
 
                 GhostButton {
+                    textColor: Colors.panelText.color
                     visible: Notifs.list.length > 0
                     text: "Clear all"
                     onClicked: Notifs.clear()
                 }
 
                 GhostButton {
+                    textColor: Colors.panelText.color
                     text: "×"
                     onClicked: Notifs.panelOpen = false
                 }
@@ -123,9 +132,9 @@ Item {
                     opacity: Notifs.list.length === 0 ? 1 : 0
                     visible: opacity > 0
                     text: "No notifications"
-                    color: Colors.text.secondary
-                    font.pointSize: Colors.text.fontSize
-                    font.family: Colors.text.fontFamily
+                    color: Colors.panelText.secondary
+                    font.pointSize: Colors.panelText.fontSize
+                    font.family: Colors.panelText.fontFamily
 
                     Behavior on opacity {
                         NumberAnimation {
@@ -134,6 +143,12 @@ Item {
                         }
                     }
                 }
+            }
+
+            MonthCalendar {
+                id: calendar
+                Layout.fillWidth: true
+                Layout.topMargin: 10
             }
 
             SbbClock {
@@ -146,9 +161,9 @@ Item {
                 Layout.alignment: Qt.AlignHCenter
                 Layout.bottomMargin: 10
                 text: Time.date
-                color: Colors.text.secondary
-                font.pointSize: Colors.text.fontSize
-                font.family: Colors.text.fontFamily
+                color: Colors.panelText.secondary
+                font.pointSize: Colors.panelText.fontSize
+                font.family: Colors.panelText.fontFamily
             }
 
             // Stay awake: inhibits idle, so hypridle does not lock the screen
@@ -173,22 +188,22 @@ Item {
 
                     SessionIcon {
                         name: "awake"
-                        color: Idle.inhibit ? Colors.text.activeColor : Colors.text.color
+                        color: Idle.inhibit ? Colors.panelText.activeColor : Colors.panelText.color
                     }
 
                     Text {
                         Layout.fillWidth: true
                         text: "Stay awake"
-                        color: Colors.text.color
-                        font.pointSize: Colors.text.fontSize
-                        font.family: Colors.text.fontFamily
+                        color: Colors.panelText.color
+                        font.pointSize: Colors.panelText.fontSize
+                        font.family: Colors.panelText.fontFamily
                     }
 
                     Text {
                         text: Idle.inhibit ? "On" : "Off"
-                        color: Idle.inhibit ? Colors.text.activeColor : Colors.text.secondary
-                        font.pointSize: Colors.text.fontSize
-                        font.family: Colors.text.fontFamily
+                        color: Idle.inhibit ? Colors.panelText.activeColor : Colors.panelText.secondary
+                        font.pointSize: Colors.panelText.fontSize
+                        font.family: Colors.panelText.fontFamily
                         font.weight: Font.Medium
                     }
                 }
@@ -205,6 +220,89 @@ Item {
                 }
             }
 
+            // Theme: a click selects the next theme; "Edit…" opens the settings window
+            Rectangle {
+                Layout.fillWidth: true
+                implicitHeight: 36
+                radius: 8
+                color: Colors.workspaceCircle
+
+                // Under the row, so the "Edit…" button gets its own clicks
+                HoverArea {
+                    anchors.fill: parent
+                    radius: parent.radius
+                    onClicked: Theme.next()
+                }
+
+                RowLayout {
+                    anchors.fill: parent
+                    anchors.leftMargin: 12
+                    anchors.rightMargin: 6
+                    spacing: 8
+
+                    // Half-filled circle in the bar gradient
+                    Rectangle {
+                        implicitWidth: 16
+                        implicitHeight: 16
+                        radius: 8
+                        border.width: 1.5
+                        border.color: Colors.panelText.color
+                        gradient: Gradient {
+                            orientation: Gradient.Horizontal
+                            GradientStop {
+                                position: 0
+                                color: Theme.current.barStart
+                            }
+                            GradientStop {
+                                position: 1
+                                color: Theme.current.barEnd
+                            }
+                        }
+                    }
+
+                    Text {
+                        Layout.fillWidth: true
+                        text: "Theme"
+                        color: Colors.panelText.color
+                        font.pointSize: Colors.panelText.fontSize
+                        font.family: Colors.panelText.fontFamily
+                    }
+
+                    Text {
+                        text: Theme.name
+                        color: Colors.panelText.secondary
+                        font.pointSize: Colors.panelText.fontSize
+                        font.family: Colors.panelText.fontFamily
+                        font.weight: Font.Medium
+                    }
+
+                    Rectangle {
+                        implicitWidth: editText.implicitWidth + 16
+                        implicitHeight: 24
+                        radius: 6
+                        color: Colors.workspaceCircle
+
+                        Text {
+                            id: editText
+                            anchors.centerIn: parent
+                            text: "Edit…"
+                            color: Colors.panelText.color
+                            font.pointSize: Colors.panelText.fontSize - 1
+                            font.family: Colors.panelText.fontFamily
+                        }
+
+                        HoverArea {
+                            anchors.fill: parent
+                            radius: parent.radius
+                            onClicked: {
+                                Notifs.panelOpen = false;
+                                Theme.settingsOpen = true;
+                            }
+                        }
+                    }
+                }
+            }
+
             // Session: each button asks for confirmation first
             RowLayout {
                 Layout.fillWidth: true
@@ -213,8 +311,8 @@ Item {
                 ConfirmButton {
                     Layout.fillWidth: true
                     icon: "lock"
-                    iconColor: Colors.text.warning
-                    sureColor: Colors.text.warning
+                    iconColor: Colors.panelText.warning
+                    sureColor: Colors.panelText.warning
                     text: "Lock"
                     onConfirmed: {
                         Notifs.panelOpen = false;
@@ -232,7 +330,7 @@ Item {
                 ConfirmButton {
                     Layout.fillWidth: true
                     icon: "power"
-                    iconColor: Colors.text.danger
+                    iconColor: Colors.panelText.danger
                     text: "Power off"
                     onConfirmed: Quickshell.execDetached(["systemctl", "poweroff"])
                 }

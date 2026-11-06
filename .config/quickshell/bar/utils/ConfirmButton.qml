@@ -7,8 +7,8 @@ Rectangle {
     id: root
     // "lock", "logout", "reboot", "softreboot" or "power"
     property string icon
-    property color iconColor: Colors.text.color
-    property color sureColor: Colors.text.danger
+    property color iconColor: Colors.panelText.color
+    property color sureColor: Colors.panelText.danger
     property string text
     property bool asking: false
     signal confirmed
@@ -34,9 +34,9 @@ Rectangle {
             id: label
             anchors.horizontalCenter: parent.horizontalCenter
             text: root.asking ? "Sure?" : root.text
-            color: root.asking ? root.sureColor : Colors.text.color
-            font.pointSize: Colors.text.fontSize
-            font.family: Colors.text.fontFamily
+            color: root.asking ? root.sureColor : Colors.panelText.color
+            font.pointSize: Colors.panelText.fontSize
+            font.family: Colors.panelText.fontFamily
         }
     }
 
